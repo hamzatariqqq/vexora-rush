@@ -4,31 +4,42 @@ import 'dart:math' as math;
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 import 'game/vexora_rush_game.dart';
 import 'models/ball_style.dart';
 import 'models/map_style.dart';
 import 'screens/progression_screens.dart';
 import 'screens/reward_shop_screen.dart';
+import 'screens/splash_screen.dart';
 import 'services/ad_service.dart';
 import 'services/audio_service.dart';
 import 'services/storage_service.dart';
 
-import 'screens/splash_screen.dart';
+
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-  ]);
+  try {
+    await SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
 
-  await SystemChrome.setEnabledSystemUIMode(
-    SystemUiMode.immersiveSticky,
-  );
+    await SystemChrome.setEnabledSystemUIMode(
+      SystemUiMode.immersiveSticky,
+    );
+  } catch (e) {
+    debugPrint('System UI startup error: $e');
+  }
 
   final storage = StorageService();
-  await storage.load();
+
+  try {
+    await storage.load();
+  } catch (e) {
+    debugPrint('Storage startup error: $e');
+  }
 
   final ads = AdService();
 
@@ -38,6 +49,14 @@ Future<void> main() async {
       ads: ads,
     ),
   );
+
+  Future<void>(() async {
+    try {
+      await MobileAds.instance.initialize();
+    } catch (e) {
+      debugPrint('AdMob initialization error: $e');
+    }
+  });
 }
 
 class VexoraRushApp extends StatelessWidget {
@@ -73,7 +92,6 @@ class VexoraRushApp extends StatelessWidget {
     );
   }
 }
-
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({

@@ -2,7 +2,7 @@ name: vexora_rush
 description: "Vexora Rush - Endless neon arcade survival game"
 publish_to: 'none'
 
-version: 1.0.0+1
+version: 1.0.1+2
 
 environment:
   sdk: ^3.12.1
@@ -13,7 +13,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   flame: 1.38.2
   shared_preferences: 2.5.5
-  google_mobile_ads: 9.1.0
+  google_mobile_ads: 7.0.0
   audioplayers: 6.8.1
 
 dev_dependencies:
